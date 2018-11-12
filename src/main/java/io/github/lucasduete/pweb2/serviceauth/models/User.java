@@ -1,28 +1,41 @@
 package io.github.lucasduete.pweb2.serviceauth.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(unique = true, nullable = false)
     private String matricula;
 
     @Enumerated
+    @Column(nullable = false)
     private RoleEnum role;
 
+    @Column(nullable = false)
     private String password;
 
     public User() {
 
     }
 
-    public User(String matricula, RoleEnum role, String password) {
+    public User(Integer id, String matricula, RoleEnum role, String password) {
+        this.id = id;
         this.matricula = matricula;
         this.role = role;
         this.password = password;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getMatricula() {
@@ -56,6 +69,7 @@ public class User {
 
         User user = (User) o;
 
+        if (!id.equals(user.id)) return false;
         if (!matricula.equals(user.matricula)) return false;
         if (role != user.role) return false;
         return password.equals(user.password);
@@ -63,7 +77,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = matricula.hashCode();
+        int result = id.hashCode();
+        result = 31 * result + matricula.hashCode();
         result = 31 * result + role.hashCode();
         result = 31 * result + password.hashCode();
         return result;
@@ -72,7 +87,8 @@ public class User {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
-        sb.append("matricula='").append(matricula).append('\'');
+        sb.append("id=").append(id);
+        sb.append(", matricula='").append(matricula).append('\'');
         sb.append(", role=").append(role);
         sb.append(", password='").append(password).append('\'');
         sb.append('}');
