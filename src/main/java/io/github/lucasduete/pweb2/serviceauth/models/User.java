@@ -7,7 +7,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String matricula;
@@ -23,18 +23,18 @@ public class User {
 
     }
 
-    public User(Integer id, String matricula, RoleEnum role, String password) {
+    public User(Long id, String matricula, RoleEnum role, String password) {
         this.id = id;
         this.matricula = matricula;
         this.role = role;
         this.password = password;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
