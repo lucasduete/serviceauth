@@ -2,7 +2,7 @@ package io.github.lucasduete.pweb2.serviceauth.models;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "usuario")
 public class User {
 
     @Id
