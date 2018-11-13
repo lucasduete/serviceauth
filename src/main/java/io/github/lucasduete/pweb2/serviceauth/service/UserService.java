@@ -46,4 +46,13 @@ public class UserService {
         return this.userDao.findByMatricula(user.getMatricula());
     }
 
+    public User authenticate(String matricula, String password) {
+
+        if (getByMatricula(matricula) != null)
+            return this.userDao.findByMatriculaEqualsAndPasswordEquals(matricula, password);
+        else
+            return null;
+
+    }
+
 }
