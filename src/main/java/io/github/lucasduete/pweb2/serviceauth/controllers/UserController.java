@@ -15,19 +15,35 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public User saveUser(@RequestBody User user) {
+    public ResponseEntity saveUser(@RequestBody User user) {
 
         if (user == null)
-            ResponseEntity
+            return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Usuário não foi informado");
 
-        return this.userService.save(user);
+        return ResponseEntity.ok(this.userService.save(user));
+    }
+
+    @GetMapping
+    public ResponseEntity getAll() {
+
+        return ResponseEntity.ok(
+                this.userService.listAll()
+        );
     }
 
     @GetMapping("{id}")
-    public User getById(@PathVariable Long id) {
-        return this.userService.getById(id);
+    public ResponseEntity getById(@PathVariable Long id) {
+
+        User user = this.userService.getById(id);
+
+        if (user == null)
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Este usuário não exite");
+
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("{id}")
