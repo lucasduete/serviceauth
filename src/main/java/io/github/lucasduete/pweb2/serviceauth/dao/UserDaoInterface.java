@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserDaoInterface extends JpaRepository<User, String> {
+public interface UserDaoInterface extends JpaRepository<User, Long> {
+
+    User findByMatricula(String matricula);
 
     List<User> findAllByRole(RoleEnum role);
 
