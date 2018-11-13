@@ -15,6 +15,8 @@ public interface UserDaoInterface extends JpaRepository<User, Long> {
 
     List<User> findAllByRole(RoleEnum role);
 
-    @Query("SELECT u FROM User u WHERE matricula = ?1 AND password = ?2")
-    User authenticate(String matricula, String password);
+//    @Query("SELECT u FROM Usuario u WHERE u.matricula = ?1 AND u.password = ?2")
+//    User authenticate(String matricula, String password);
+
+    User findByMatriculaEqualsAndPasswordEquals(String matricula, String password);
 }
