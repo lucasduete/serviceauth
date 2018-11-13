@@ -94,4 +94,16 @@ public class UserController {
         return ResponseEntity.ok(null);
     }
 
+    @PostMapping("login")
+    public ResponseEntity authenticate(@RequestParam(name = "matricula", required = true) String matricula,
+                             @RequestParam(name = "password", required = true) String password) {
+
+        User user = this.userService.authenticate(matricula, password);
+
+        if (user == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        else
+            return ResponseEntity.ok(user);
+
+    }
 }
