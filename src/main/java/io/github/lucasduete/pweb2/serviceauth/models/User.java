@@ -19,15 +19,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     public User() {
 
     }
 
-    public User(Long id, String matricula, RoleEnum role, String password) {
-        this.id = id;
+    public User(String matricula, RoleEnum role, String password, String email) {
         this.matricula = matricula;
         this.role = role;
         this.password = password;
+        this.email = email;
     }
 
     public Long getId() {
@@ -62,6 +65,14 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,7 +83,8 @@ public class User {
         if (!id.equals(user.id)) return false;
         if (!matricula.equals(user.matricula)) return false;
         if (role != user.role) return false;
-        return password.equals(user.password);
+        if (!password.equals(user.password)) return false;
+        return email.equals(user.email);
     }
 
     @Override
@@ -81,6 +93,7 @@ public class User {
         result = 31 * result + matricula.hashCode();
         result = 31 * result + role.hashCode();
         result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
         return result;
     }
 
@@ -91,6 +104,7 @@ public class User {
         sb.append(", matricula='").append(matricula).append('\'');
         sb.append(", role=").append(role);
         sb.append(", password='").append(password).append('\'');
+        sb.append(", email='").append(email).append('\'');
         sb.append('}');
         return sb.toString();
     }
