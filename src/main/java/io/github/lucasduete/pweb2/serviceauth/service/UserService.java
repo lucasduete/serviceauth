@@ -1,10 +1,15 @@
 package io.github.lucasduete.pweb2.serviceauth.service;
 
 import io.github.lucasduete.pweb2.serviceauth.dao.UserDaoInterface;
+import io.github.lucasduete.pweb2.serviceauth.events.models.UserLogado;
+import io.github.lucasduete.pweb2.serviceauth.events.models.UserTentativaFalhaLogin;
 import io.github.lucasduete.pweb2.serviceauth.models.RoleEnum;
 import io.github.lucasduete.pweb2.serviceauth.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +20,12 @@ public class UserService {
     @Autowired
     private UserDaoInterface userDao;
 
+    private Logger log;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public UserService(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher =  applicationEventPublisher;
+        this.log = LoggerFactory.getLogger(UserService.class);
     }
 
     public User save(User user) {
@@ -67,6 +74,16 @@ public class UserService {
         }
         else
             return null;
+    }
+
+    @EventListener
+    public void usuarioLogado(UserLogado userLogado) {
+        log.info(userLogado.toString());
+    }
+
+    @EventListener
+    public void tentativaLogin(UserTentativaFalhaLogin userTentativa) {
+        log.info(userTentativa.toString());
     }
 
 }
