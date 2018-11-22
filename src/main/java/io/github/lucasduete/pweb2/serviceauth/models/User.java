@@ -1,9 +1,13 @@
 package io.github.lucasduete.pweb2.serviceauth.models;
 
+import io.github.lucasduete.pweb2.serviceauth.events.models.UserLogado;
+import io.github.lucasduete.pweb2.serviceauth.events.models.UserTentativaFalhaLogin;
+import org.springframework.data.domain.AbstractAggregateRoot;
+
 import javax.persistence.*;
 
 @Entity(name = "usuario")
-public class User {
+public class User extends AbstractAggregateRoot<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,6 +75,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserLogado usuarioLogado() {
+        return registerEvent(new UserLogado(getEmail(), getPassword(), getMatricula()));
+    }
+
+    public UserTentativaFalhaLogin tentativaFalhaLogin() {
+        return registerEvent(new UserTentativaFalhaLogin(getPassword(), getMatricula()));
     }
 
     @Override
