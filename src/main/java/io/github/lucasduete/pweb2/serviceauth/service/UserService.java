@@ -62,13 +62,15 @@ public class UserService {
 
     public User authenticate(String matricula, String password) {
 
-        if (getByMatricula(matricula) != null) {
+        User userComMatricula = getByMatricula(matricula);
+
+        if (userComMatricula != null) {
             User user = this.userDao.findByMatriculaEqualsAndPasswordEquals(matricula, password);
 
             if (user != null)
                 applicationEventPublisher.publishEvent(user.usuarioLogado());
             else
-                applicationEventPublisher.publishEvent(user.tentativaFalhaLogin(password, matricula));
+                applicationEventPublisher.publishEvent(userComMatricula.tentativaFalhaLogin(password, matricula));
 
             return user;
         }
