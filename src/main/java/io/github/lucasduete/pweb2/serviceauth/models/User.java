@@ -81,8 +81,8 @@ public class User extends AbstractAggregateRoot<User> {
         return registerEvent(new UserLogado(getEmail(), getPassword(), getMatricula()));
     }
 
-    public UserTentativaFalhaLogin tentativaFalhaLogin() {
-        return registerEvent(new UserTentativaFalhaLogin(getPassword(), getMatricula()));
+    public UserTentativaFalhaLogin tentativaFalhaLogin(String tentativaPassword, String tentativaMatricula) {
+        return registerEvent(new UserTentativaFalhaLogin(tentativaPassword, tentativaMatricula));
     }
 
     @Override

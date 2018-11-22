@@ -64,8 +64,8 @@ public class UserTentativaFalhaLogin {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("UserTentativaFalhaLogin{");
-        sb.append("password='").append(password).append('\'');
         sb.append(", matricula='").append(matricula).append('\'');
+        sb.append("tried_password='").append(password).append('\'');
         sb.append(", horaTentativaLogin=").append(horaTentativaLogin);
         sb.append('}');
         return sb.toString();

@@ -4,6 +4,7 @@ import io.github.lucasduete.pweb2.serviceauth.dao.UserDaoInterface;
 import io.github.lucasduete.pweb2.serviceauth.models.RoleEnum;
 import io.github.lucasduete.pweb2.serviceauth.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,12 @@ public class UserService {
 
     @Autowired
     private UserDaoInterface userDao;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public UserService(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher =  applicationEventPublisher;
+    }
 
     public User save(User user) {
         return this.userDao.save(user);
@@ -48,11 +55,18 @@ public class UserService {
 
     public User authenticate(String matricula, String password) {
 
-        if (getByMatricula(matricula) != null)
-            return this.userDao.findByMatriculaEqualsAndPasswordEquals(matricula, password);
+        if (getByMatricula(matricula) != null) {
+            User user = this.userDao.findByMatriculaEqualsAndPasswordEquals(matricula, password);
+
+            if (user != null)
+                applicationEventPublisher.publishEvent(user.usuarioLogado());
+            else
+                applicationEventPublisher.publishEvent(user.tentativaFalhaLogin(password, matricula));
+
+            return user;
+        }
         else
             return null;
-
     }
 
 }
